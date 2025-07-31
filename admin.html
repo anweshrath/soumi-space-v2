@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soumita Space - Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/+esm'
+        window.supabase = { createClient };
+    </script>
+</head>
+<body>
+    <!-- Premium Dark Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>Login</h1>
+                <p>Welcome back please login to your account</p>
+            </div>
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="username">User Name</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user-circle input-icon"></i>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                </div>
+                <div class="remember-me">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+                <button type="submit" class="btn-login">
+                    Login
+                </button>
+            </form>
+            <div id="login-error" class="login-error"></div>
+            <a href="#" class="forgot-password">Forgot Password?</a>
+            <div class="signup-link">
+                Don't have an account? <a href="#">Signup</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Admin Panel -->
+    <div id="admin-panel" class="admin-panel hidden">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <h1><i class="fas fa-cog"></i> Soumita Space Admin</h1>
+            </div>
+            <div class="header-right">
+                <button id="dark-mode-toggle" class="btn-secondary">
+                    <i class="fas fa-moon"></i> Dark Mode
+                </button>
+                <button id="preview-btn" class="btn-secondary">
+                    <i class="fas fa-eye"></i> Preview
+                </button>
+                <button id="save-btn" class="btn-primary">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+                <button id="logout-btn" class="btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="admin-content">
+            <!-- Sidebar -->
+            <aside class="admin-sidebar">
+                <nav class="sidebar-nav">
+                    <a href="#hero" class="nav-item active" data-section="hero">
+                        <i class="fas fa-home"></i> Hero Section
+                    </a>
+                    <a href="#about" class="nav-item" data-section="about">
+                        <i class="fas fa-user"></i> About Section
+                    </a>
+                    <a href="#experience" class="nav-item" data-section="experience">
+                        <i class="fas fa-briefcase"></i> Experience
+                    </a>
+                    <a href="#skills" class="nav-item" data-section="skills">
+                        <i class="fas fa-chart-bar"></i> Skills
+                    </a>
+                    <a href="#testimonials" class="nav-item" data-section="testimonials">
+                        <i class="fas fa-comments"></i> Testimonials
+                    </a>
+                                <a href="#linkedin" class="nav-item" data-section="linkedin">
+                <i class="fab fa-linkedin"></i> LinkedIn Posts
+            </a>
+            <a href="#form" class="nav-item" data-section="form">
+                <i class="fas fa-envelope"></i> Contact Form
+            </a>
+            <a href="#navigation" class="nav-item" data-section="navigation">
+                <i class="fas fa-bars"></i> Navigation
+            </a>
+            <a href="#scripts" class="nav-item" data-section="scripts">
+                <i class="fas fa-code"></i> Scripts
+            </a>
+            <a href="#legal" class="nav-item" data-section="legal">
+                <i class="fas fa-gavel"></i> Legal Compliance
+            </a>
+
+                    <a href="#contact" class="nav-item" data-section="contact">
+                        <i class="fas fa-envelope"></i> Contact
+                    </a>
+                    <a href="#settings" class="nav-item" data-section="settings">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                    <a href="#credentials" class="nav-item" data-section="credentials">
+                        <i class="fas fa-key"></i> Change Credentials
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Main Editor Area -->
+            <main class="editor-main">
+                <!-- Hero Section Editor -->
+                <div id="hero-editor" class="editor-section active">
+                    <h2>Hero Section</h2>
+                    <div class="editor-grid">
+                        <div class="editor-form">
+                            <div class="form-group">
+                                <label>Greeting Text</label>
+                                <input type="text" id="hero-greeting" value="Hello, I'm">
+                            </div>
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" id="hero-name" value="Soumita Chatterjee">
+                            </div>
+                            <div class="form-group">
+                                <label>Subtitle</label>
+                                <input type="text" id="hero-subtitle" value="Australia Immigration Specialist">
+                                <small>Leave empty to keep typewriter effect, or enter text for static subtitle</small>
+                            </div>
+                            <div class="form-group">
+                                <label>Typewriter Titles (comma separated)</label>
+                                <textarea id="typewriter-titles" rows="3">Australia Immigration Specialist, Team Leader, Certified Industrial Accountant, Senior Admissions Officer</textarea>
+                                <small>Only used if subtitle is empty</small>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="hero-description" rows="4">Driving growth & operational excellence through expertise in global immigration, financial analysis, team leadership & process optimization.</textarea>
+                            </div>
+                            
+                            <!-- Hero Buttons Section -->
+                            <div class="form-section">
+                                <h3>Hero Buttons</h3>
+                                
+                                <!-- Primary Button -->
+                                <div class="button-editor">
+                                    <h4>Primary Button</h4>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Button Text</label>
+                                            <input type="text" id="hero-btn-primary-text" value="Book a Consultation">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Link Type</label>
+                                            <select id="hero-btn-primary-link-type">
+                                                <option value="anchor">Page Anchor</option>
+                                                <option value="external">External URL</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Link Target</label>
+                                            <input type="text" id="hero-btn-primary-link" value="#contact" placeholder="#contact or https://example.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Open in New Tab</label>
+                                            <input type="checkbox" id="hero-btn-primary-new-tab">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Button Styling -->
+                                    <div class="styling-section">
+                                        <h5>Button Styling</h5>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Background Gradient Start</label>
+                                                <input type="color" id="hero-btn-primary-bg-start" value="#6a5acd">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Background Gradient End</label>
+                                                <input type="color" id="hero-btn-primary-bg-end" value="#9370db">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Text Color</label>
+                                                <input type="color" id="hero-btn-primary-text-color" value="#ffffff">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Border Color</label>
+                                                <input type="color" id="hero-btn-primary-border" value="transparent">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Border Width (px)</label>
+                                                <input type="number" id="hero-btn-primary-border-width" value="0" min="0" max="10">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Border Radius (px)</label>
+                                                <input type="number" id="hero-btn-primary-radius" value="8" min="0" max="50">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Padding (px)</label>
+                                                <input type="number" id="hero-btn-primary-padding" value="16" min="8" max="32">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Font Size (px)</label>
+                                                <input type="number" id="hero-btn-primary-font-size" value="16" min="12" max="24">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Secondary Button -->
+                                <div class="button-editor">
+                                    <h4>Secondary Button</h4>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Button Text</label>
+                                            <input type="text" id="hero-btn-secondary-text" value="View Experience">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Link Type</label>
+                                            <select id="hero-btn-secondary-link-type">
+                                                <option value="anchor">Page Anchor</option>
+                                                <option value="external">External URL</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Link Target</label>
+                                            <input type="text" id="hero-btn-secondary-link" value="#experience" placeholder="#experience or https://example.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Open in New Tab</label>
+                                            <input type="checkbox" id="hero-btn-secondary-new-tab">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Button Styling -->
+                                    <div class="styling-section">
+                                        <h5>Button Styling</h5>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Background Color</label>
+                                                <input type="color" id="hero-btn-secondary-bg" value="transparent">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Text Color</label>
+                                                <input type="color" id="hero-btn-secondary-text-color" value="#6a5acd">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Border Color</label>
+                                                <input type="color" id="hero-btn-secondary-border" value="#6a5acd">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Border Width (px)</label>
+                                                <input type="number" id="hero-btn-secondary-border-width" value="2" min="0" max="10">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Border Radius (px)</label>
+                                                <input type="number" id="hero-btn-secondary-radius" value="8" min="0" max="50">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Padding (px)</label>
+                                                <input type="number" id="hero-btn-secondary-padding" value="16" min="8" max="32">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Font Size (px)</label>
+                                            <input type="number" id="hero-btn-secondary-font-size" value="16" min="12" max="24">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Navigation Bar Section -->
+                            <div class="form-section">
+                                <h3>Navigation Bar</h3>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Navbar Style</label>
+                                        <select id="navbar-style">
+                                            <option value="default">Default</option>
+                                            <option value="transparent">Transparent</option>
+                                            <option value="glass">Glass Effect</option>
+                                            <option value="solid">Solid Background</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sticky Navigation</label>
+                                        <input type="checkbox" id="navbar-sticky" checked>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Background Color</label>
+                                        <input type="color" id="navbar-bg-color" value="#ffffff">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Background Opacity</label>
+                                        <input type="range" id="navbar-bg-opacity" min="0" max="100" value="100">
+                                        <span id="navbar-opacity-value">100%</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Text Color</label>
+                                        <input type="color" id="navbar-text-color" value="#333333">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Hover Color</label>
+                                        <input type="color" id="navbar-hover-color" value="#6a5acd">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Font Size (px)</label>
+                                        <input type="number" id="navbar-font-size" value="16" min="12" max="20">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Padding (px)</label>
+                                        <input type="number" id="navbar-padding" value="20" min="10" max="40">
+                                    </div>
+                                </div>
+                                
+                                <!-- Navigation Links -->
+                                <div class="nav-links-editor">
+                                    <h4>Navigation Links</h4>
+                                    <div id="nav-links-list">
+                                        <!-- Navigation links will be added here -->
+                                    </div>
+                                    <button type="button" id="add-nav-link" class="btn-secondary">
+                                        <i class="fas fa-plus"></i> Add Navigation Link
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Profile Image</label>
+                                <div class="image-upload-container">
+                                    <div class="image-input-group">
+                                        <label class="input-label">Image URL</label>
+                                        <input type="url" id="hero-image" value="https://soumita.space/images/soumita-office-1.jpeg" placeholder="https://example.com/image.jpg">
+                                    </div>
+                                    <div class="image-input-group">
+                                        <label class="input-label">Or Upload Image</label>
+                                        <input type="file" id="hero-image-upload" accept="image/*" class="file-upload">
+                                        <small>Max 5MB, JPG, PNG, or GIF</small>
+                                    </div>
+                                    <div class="image-preview" id="hero-image-preview">
+                                        <img id="hero-preview-img" src="https://soumita.space/images/soumita-office-1.jpeg" alt="Profile preview">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="editor-preview">
+                            <h3>Live Preview</h3>
+                            <div id="hero-preview" class="preview-frame"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Section Editor -->
+                <div id="about-editor" class="editor-section">
+                    <h2>About Section</h2>
+                    <div class="editor-grid">
+                        <div class="editor-form">
+                            <div class="form-group">
+                                <label>Section Title</label>
+                                <input type="text" id="about-title" value="Bridging Education & Immigration">
+                            </div>
+                            <div class="form-group">
+                                <label>Section Description</label>
+                                <textarea id="about-description" rows="3">A unique blend of financial expertise and educational consulting, dedicated to empowering global aspirations.</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>About Text</label>
+                                <textarea id="about-text" rows="8">From the meticulous world of audit and accounting to the dynamic realm of education consulting, my career journey has been a testament to adaptability and continuous growth.
+
+Beginning as an Audit & Accounts Assistant, I cultivated an unwavering commitment to precision and accuracy. This foundation is now the cornerstone of my approach to education consulting.
+
+As a Senior Admission Officer specializing in Australian immigration, I've discovered my true calling: helping individuals navigate complex educational and immigration landscapes with clarity and confidence.
+
+My philosophy centers on creating seamless experiences that transform international dreams into reality, backed by rigorous planning, deep industry knowledge, and operational excellence.</textarea>
+                            </div>
+                        </div>
+                        <div class="editor-preview">
+                            <h3>Live Preview</h3>
+                            <div id="about-preview" class="preview-frame"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experience Section Editor -->
+                <div id="experience-editor" class="editor-section">
+                    <h2>Experience Section</h2>
+                    <div class="experience-list" id="experience-list">
+                        <!-- Experience items will be added here -->
+                    </div>
+                    <button id="add-experience" class="btn-secondary">
+                        <i class="fas fa-plus"></i> Add Experience
+                    </button>
+                </div>
+
+                <!-- Skills Section Editor -->
+                <div id="skills-editor" class="editor-section">
+                    <h2>Skills Section</h2>
+                    <div class="skills-categories">
+                        <div class="skill-category">
+                            <h3>Admissions & Immigration</h3>
+                            <div class="skill-items" id="skills-admissions">
+                                <!-- Skill items will be added here -->
+                            </div>
+                            <button class="add-skill-btn" data-category="admissions">
+                                <i class="fas fa-plus"></i> Add Skill
+                            </button>
+                        </div>
+                        
+                        <div class="skill-category">
+                            <h3>Management & Leadership</h3>
+                            <div class="skill-items" id="skills-management">
+                                <!-- Skill items will be added here -->
+                            </div>
+                            <button class="add-skill-btn" data-category="management">
+                                <i class="fas fa-plus"></i> Add Skill
+                            </button>
+                        </div>
+                        
+                        <div class="skill-category">
+                            <h3>Finance & Accounting</h3>
+                            <div class="skill-items" id="skills-finance">
+                                <!-- Skill items will be added here -->
+                            </div>
+                            <button class="add-skill-btn" data-category="finance">
+                                <i class="fas fa-plus"></i> Add Skill
+                            </button>
+                        </div>
+                        
+                        <div class="skill-category">
+                            <h3>Languages & Communication</h3>
+                            <div class="skill-items" id="skills-languages">
+                                <!-- Skill items will be added here -->
+                            </div>
+                            <button class="add-skill-btn" data-category="languages">
+                                <i class="fas fa-plus"></i> Add Skill
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonials Section Editor -->
+                <div id="testimonials-editor" class="editor-section">
+                    <h2>Testimonials</h2>
+                    <div class="testimonials-list" id="testimonials-list">
+                        <!-- Testimonial items will be added here -->
+                    </div>
+                    <button id="add-testimonial" class="btn-secondary">
+                        <i class="fas fa-plus"></i> Add Testimonial
+                    </button>
+                </div>
+
+                <!-- LinkedIn Posts Section Editor -->
+                <div id="linkedin-editor" class="editor-section">
+                    <h2>LinkedIn Posts</h2>
+                    <div class="linkedin-posts-list" id="linkedin-posts-list">
+                        <!-- LinkedIn post items will be added here -->
+                    </div>
+                    <button id="add-linkedin-post" class="btn-secondary">
+                        <i class="fab fa-linkedin"></i> Add LinkedIn Post
+                    </button>
+                </div>
+
+
+
+                <!-- Contact Section Editor -->
+                <div id="contact-editor" class="editor-section">
+                    <h2>Contact Information</h2>
+                    <div class="editor-form">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="contact-email" value="hello@soumita.space">
+                        </div>
+                        <div class="form-group">
+                            <label>LinkedIn URL</label>
+                            <input type="url" id="contact-linkedin" value="https://www.linkedin.com/in/soumita-chatterjee">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="contact-location" value="Kolkata, India">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Section Editor -->
+                <div id="navigation-editor" class="editor-section">
+                    <h2>Navigation Menu</h2>
+                    <div class="editor-grid">
+                        <div class="editor-form">
+                            <!-- Navigation Styling -->
+                            <div class="form-section">
+                                <h3>Navigation Styling</h3>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Background Color</label>
+                                        <input type="color" id="nav-bg-color" value="#ffffff">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Background Opacity</label>
+                                        <input type="range" id="nav-bg-opacity" min="0" max="100" value="100">
+                                        <span id="nav-opacity-value">100%</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Text Color</label>
+                                        <input type="color" id="nav-text-color" value="#333333">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Hover Color</label>
+                                        <input type="color" id="nav-hover-color" value="#6a5acd">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Font Size (px)</label>
+                                        <input type="number" id="nav-font-size" value="16" min="12" max="20">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Padding (px)</label>
+                                        <input type="number" id="nav-padding" value="20" min="10" max="40">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Sticky Navigation</label>
+                                        <input type="checkbox" id="nav-sticky" checked>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Show Logo</label>
+                                        <input type="checkbox" id="nav-show-logo" checked>
+                                    </div>
+                                </div>
+                                
+                                <!-- Logo Configuration -->
+                                <div id="logo-config" class="form-section" style="display: none;">
+                                    <h3>Logo Configuration</h3>
+                                    
+                                    <div class="form-group">
+                                        <label>Logo Type</label>
+                                        <select id="logo-type" class="form-input">
+                                            <option value="single">Single Logo (Auto-invert for themes)</option>
+                                            <option value="dual">Separate Logos (Dark & Light themes)</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <!-- Single Logo Upload -->
+                                    <div id="single-logo-section">
+                                        <div class="form-group">
+                                            <label>Upload Logo</label>
+                                            <div class="file-upload-container">
+                                                <input type="file" id="logo-upload" accept="image/*" class="file-input">
+                                                <div class="file-upload-area" onclick="document.getElementById('logo-upload').click()">
+                                                    <i class="fas fa-cloud-upload-alt"></i>
+                                                    <span>Click to upload logo</span>
+                                                    <small>Recommended: PNG with transparent background</small>
+                                                </div>
+                                                <div id="logo-preview" class="logo-preview" style="display: none;">
+                                                    <img id="logo-preview-img" src="" alt="Logo Preview">
+                                                    <button type="button" class="remove-logo-btn" onclick="adminPanel.removeLogo()">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Dual Logo Upload -->
+                                    <div id="dual-logo-section" style="display: none;">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Dark Theme Logo</label>
+                                                <div class="file-upload-container">
+                                                    <input type="file" id="logo-dark-upload" accept="image/*" class="file-input">
+                                                    <div class="file-upload-area" onclick="document.getElementById('logo-dark-upload').click()">
+                                                        <i class="fas fa-cloud-upload-alt"></i>
+                                                        <span>Upload dark logo</span>
+                                                        <small>For dark backgrounds</small>
+                                                    </div>
+                                                    <div id="logo-dark-preview" class="logo-preview" style="display: none;">
+                                                        <img id="logo-dark-preview-img" src="" alt="Dark Logo Preview">
+                                                        <button type="button" class="remove-logo-btn" onclick="adminPanel.removeLogo('dark')">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Light Theme Logo</label>
+                                                <div class="file-upload-container">
+                                                    <input type="file" id="logo-light-upload" accept="image/*" class="file-input">
+                                                    <div class="file-upload-area" onclick="document.getElementById('logo-light-upload').click()">
+                                                        <i class="fas fa-cloud-upload-alt"></i>
+                                                        <span>Upload light logo</span>
+                                                        <small>For light backgrounds</small>
+                                                    </div>
+                                                    <div id="logo-light-preview" class="logo-preview" style="display: none;">
+                                                        <img id="logo-light-preview-img" src="" alt="Light Logo Preview">
+                                                        <button type="button" class="remove-logo-btn" onclick="adminPanel.removeLogo('light')">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Logo Size</label>
+                                        <div class="range-input-group">
+                                            <input type="range" id="logo-size" min="20" max="100" value="40" class="range-input">
+                                            <span class="range-value" id="logo-size-value">40px</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Navigation Links -->
+                            <div class="form-section">
+                                <h3>Navigation Links</h3>
+                                <div id="nav-links-admin-list">
+                                    <!-- Navigation links will be added here -->
+                                </div>
+                                <button type="button" id="add-nav-link-admin" class="btn-secondary">
+                                    <i class="fas fa-plus"></i> Add Navigation Link
+                                </button>
+                            </div>
+                        </div>
+                        <div class="editor-preview">
+                            <h3>Live Preview</h3>
+                            <div id="navigation-preview" class="preview-frame"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Script Manager Section Editor -->
+                <div id="scripts-editor" class="editor-section">
+                    <h2>Script Manager</h2>
+                    <div class="editor-grid">
+                        <div class="editor-form">
+                            <div class="script-warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <strong>Important:</strong> Scripts can affect website performance and functionality. Use with caution.
+                            </div>
+                            
+                            <!-- Script List -->
+                            <div class="form-section">
+                                <h3>Active Scripts (<span id="script-count">0</span>/5)</h3>
+                                <div id="scripts-list">
+                                    <!-- Scripts will be added here -->
+                                </div>
+                                <button type="button" id="add-script-btn" class="btn-secondary">
+                                    <i class="fas fa-plus"></i> Add New Script
+                                </button>
+                            </div>
+                            
+                            <!-- Add Script Modal -->
+                            <div id="add-script-modal" class="modal">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3>Add New Script</h3>
+                                        <button type="button" class="modal-close" id="close-script-modal">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label>Script Name</label>
+                                            <input type="text" id="script-name" placeholder="e.g., Google Analytics, Chat Widget">
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Script Type</label>
+                                            <select id="script-type">
+                                                <option value="js">JavaScript</option>
+                                                <option value="html">HTML</option>
+                                                <option value="external">External URL</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Script Location</label>
+                                            <select id="script-location">
+                                                <option value="head">Header (Before &lt;/head&gt;)</option>
+                                                <option value="body-start">Body Start (After &lt;body&gt;)</option>
+                                                <option value="body-end">Body End (Before &lt;/body&gt;)</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Load Order</label>
+                                            <select id="script-order">
+                                                <option value="1">1 (First)</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5 (Last)</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Script Content/URL</label>
+                                            <textarea id="script-content" rows="8" placeholder="Paste your script here or enter external URL"></textarea>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>
+                                                <input type="checkbox" id="script-enabled" checked>
+                                                Enable Script
+                                            </label>
+                                        </div>
+                                        
+                                        <div id="script-conflict-warning" class="conflict-warning" style="display: none;">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                            <span id="conflict-message"></span>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn-secondary" id="cancel-script">Cancel</button>
+                                        <button type="button" class="btn-primary" id="save-script">Add Script</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="editor-preview">
+                            <h3>Script Preview</h3>
+                            <div id="scripts-preview" class="preview-frame">
+                                <div class="script-preview-info">
+                                    <p><i class="fas fa-info-circle"></i> Scripts will be applied to the live website</p>
+                                    <p><i class="fas fa-shield-alt"></i> Conflict detection is active</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Section Editor -->
+                <div id="settings-editor" class="editor-section">
+                    <h2>Website Settings</h2>
+                    <div class="editor-form">
+                        <div class="form-group">
+                            <label>Website Title</label>
+                            <input type="text" id="site-title" value="Soumita Chatterjee – Australia Immigration Specialist">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Theme Selection</label>
+                            <div class="theme-selector">
+                                <div class="theme-option" data-theme="modern">
+                                    <div class="theme-preview modern-theme">
+                                        <div class="preview-header"></div>
+                                        <div class="preview-content"></div>
+                                    </div>
+                                    <span class="theme-name">Modern Professional</span>
+                                    <span class="theme-description">Clean, minimalist design with smooth animations</span>
+                                    <button class="theme-preview-btn" data-theme="modern">
+                                        <i class="fas fa-eye"></i> Preview
+                                    </button>
+                                </div>
+                                
+                                <div class="theme-option" data-theme="elegant">
+                                    <div class="theme-preview elegant-theme">
+                                        <div class="preview-header"></div>
+                                        <div class="preview-content"></div>
+                                    </div>
+                                    <span class="theme-name">Elegant Classic</span>
+                                    <span class="theme-description">Sophisticated serif fonts with refined styling</span>
+                                    <button class="theme-preview-btn" data-theme="elegant">
+                                        <i class="fas fa-eye"></i> Preview
+                                    </button>
+                                </div>
+                                
+                                <div class="theme-option" data-theme="creative">
+                                    <div class="theme-preview creative-theme">
+                                        <div class="preview-header"></div>
+                                        <div class="preview-content"></div>
+                                    </div>
+                                    <span class="theme-name">Creative Bold</span>
+                                    <span class="theme-description">Vibrant colors with dynamic animations</span>
+                                    <button class="theme-preview-btn" data-theme="creative">
+                                        <i class="fas fa-eye"></i> Preview
+                                    </button>
+                                </div>
+                                
+                                <div class="theme-option" data-theme="minimal">
+                                    <div class="theme-preview minimal-theme">
+                                        <div class="preview-header"></div>
+                                        <div class="preview-content"></div>
+                                    </div>
+                                    <span class="theme-name">Minimal Clean</span>
+                                    <span class="theme-description">Ultra-clean with subtle micro-interactions</span>
+                                    <button class="theme-preview-btn" data-theme="minimal">
+                                        <i class="fas fa-eye"></i> Preview
+                                    </button>
+                                </div>
+                                
+                                <div class="theme-option" data-theme="corporate">
+                                    <div class="theme-preview corporate-theme">
+                                        <div class="preview-header"></div>
+                                        <div class="preview-content"></div>
+                                    </div>
+                                    <span class="theme-name">Corporate Trust</span>
+                                    <span class="theme-description">Professional blue tones with structured layout</span>
+                                    <button class="theme-preview-btn" data-theme="corporate">
+                                        <i class="fas fa-eye"></i> Preview
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Global Font Set</label>
+                            <select id="global-font-set" class="form-input">
+                                <option value="anwesh-default">Anwesh's Choice (Default)</option>
+                                <option value="professional">Professional (Mono, Sans)</option>
+                                <option value="futuristic">Futuristic</option>
+                                <option value="minimalist">Minimalist</option>
+                                <option value="scrapbook">Scrap Book</option>
+                                <option value="impactful">Impactful</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Preview Theme</label>
+                            <div class="preview-theme-controls">
+                                <button type="button" id="preview-current-theme" class="btn-secondary">
+                                    <i class="fas fa-eye"></i> Preview Current Settings
+                                </button>
+                                <button type="button" id="preview-theme-lightbox" class="btn-primary">
+                                    <i class="fas fa-external-link-alt"></i> Open in Lightbox
+                                </button>
+                            </div>
+                            <small>Preview your website with current settings applied</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Primary Color</label>
+                            <div class="color-input-group">
+                                <input type="color" id="primary-color" value="#1e40af">
+                                <div class="color-preview-box" id="primary-color-preview"></div>
+                                <span class="color-value" id="primary-color-value">#1e40af</span>
+                                <div class="color-info">
+                                    <span class="color-name">Dark Blue</span>
+                                    <span class="color-hex">#1e40af</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Secondary Color</label>
+                            <div class="color-input-group">
+                                <input type="color" id="secondary-color" value="#ea580c">
+                                <div class="color-preview-box" id="secondary-color-preview"></div>
+                                <span class="color-value" id="secondary-color-value">#ea580c</span>
+                                <div class="color-info">
+                                    <span class="color-name">Orange</span>
+                                    <span class="color-hex">#ea580c</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Accent Color</label>
+                            <div class="color-input-group">
+                                <input type="color" id="accent-color" value="#3b82f6">
+                                <div class="color-preview-box" id="accent-color-preview"></div>
+                                <span class="color-value" id="accent-color-value">#3b82f6</span>
+                                <div class="color-info">
+                                    <span class="color-name">Blue</span>
+                                    <span class="color-hex">#3b82f6</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Navigation Menu Color Settings -->
+                        <div class="form-section">
+                            <h3>Navigation Menu Colors</h3>
+                            <div class="form-group">
+                                <label>Color Mode</label>
+                                <select id="nav-color-mode" class="form-input">
+                                    <option value="auto">Auto (Follows Theme)</option>
+                                    <option value="dark">Dark Background, Light Text</option>
+                                    <option value="light">Light Background, Dark Text</option>
+                                    <option value="custom">Custom Colors</option>
+                                </select>
+                            </div>
+                            
+                            <div id="nav-custom-colors" style="display: none;">
+                                <div class="form-group">
+                                    <label>Background Color (Dark Theme)</label>
+                                    <div class="color-input-group">
+                                        <input type="color" id="nav-bg-color" value="#1a1a1a">
+                                        <div class="color-preview-box" id="nav-bg-color-preview"></div>
+                                        <span class="color-value" id="nav-bg-color-value">#1a1a1a</span>
+                                        <div class="color-info">
+                                            <span class="color-name">Dark Gray</span>
+                                            <span class="color-hex">#1a1a1a</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Text Color (Dark Theme)</label>
+                                    <div class="color-input-group">
+                                        <input type="color" id="nav-text-color" value="#ffffff">
+                                        <div class="color-preview-box" id="nav-text-color-preview"></div>
+                                        <span class="color-value" id="nav-text-color-value">#ffffff</span>
+                                        <div class="color-info">
+                                            <span class="color-name">White</span>
+                                            <span class="color-hex">#ffffff</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Hover Color (Dark Theme)</label>
+                                    <div class="color-input-group">
+                                        <input type="color" id="nav-hover-color" value="#ffd700">
+                                        <div class="color-preview-box" id="nav-hover-color-preview"></div>
+                                        <span class="color-value" id="nav-hover-color-value">#ffd700</span>
+                                        <div class="color-info">
+                                            <span class="color-name">Gold</span>
+                                            <span class="color-hex">#ffd700</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Active Color (Dark Theme)</label>
+                                    <div class="color-input-group">
+                                        <input type="color" id="nav-active-color" value="#ffd700">
+                                        <div class="color-preview-box" id="nav-active-color-preview"></div>
+                                        <span class="color-value" id="nav-active-color-value">#ffd700</span>
+                                        <div class="color-info">
+                                            <span class="color-name">Gold</span>
+                                            <span class="color-hex">#ffd700</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            </div>
+                            
+                            <!-- Light Theme Colors -->
+                            <div id="nav-light-colors" style="display: none;">
+                                <h4>Light Theme Colors</h4>
+                                <div class="form-group">
+                                    <label>Background Color (Light Theme)</label>
+                                    <div class="color-input-group">
+                                        <input type="color" id="nav-bg-color-light" value="#ffffff">
+                                        <div class="color-preview-box" id="nav-bg-color-light-preview"></div>
+                                        <span class="color-value" id="nav-bg-color-light-value">#ffffff</span>
+                                        <div class="color-info">
+                                            <span class="color-name">White</span>
+                                            <span class="color-hex">#ffffff</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Text Color (Light Theme)</label>
+                                    <div class="color-input-group">
+                                        <input type="color" id="nav-text-color-light" value="#333333">
+                                        <div class="color-preview-box" id="nav-text-color-light-preview"></div>
+                                        <span class="color-value" id="nav-text-color-light-value">#333333</span>
+                                        <div class="color-info">
+                                            <span class="color-name">Dark Gray</span>
+                                            <span class="color-hex">#333333</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Hover Color (Light Theme)</label>
+                                    <div class="color-input-group">
+                                        <input type="color" id="nav-hover-color-light" value="#6a5acd">
+                                        <div class="color-preview-box" id="nav-hover-color-light-preview"></div>
+                                        <span class="color-value" id="nav-hover-color-light-value">#6a5acd</span>
+                                        <div class="color-info">
+                                            <span class="color-name">Purple</span>
+                                            <span class="color-hex">#6a5acd</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Active Color (Light Theme)</label>
+                                    <div class="color-input-group">
+                                        <input type="color" id="nav-active-color-light" value="#6a5acd">
+                                        <div class="color-preview-box" id="nav-active-color-light-preview"></div>
+                                        <span class="color-value" id="nav-active-color-light-value">#6a5acd</span>
+                                        <div class="color-info">
+                                            <span class="color-name">Purple</span>
+                                            <span class="color-hex">#6a5acd</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="nav-invert-colors">
+                                    Invert Colors (Dark ↔ Light)
+                                </label>
+                                <small>Automatically invert navigation colors when switching themes</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Configuration Section Editor -->
+                <div id="form-editor" class="editor-section">
+                    <h2>Contact Form Configuration</h2>
+                    <div class="editor-form">
+                        <div class="form-group">
+                            <label>Form Type</label>
+                            <select id="form-type" class="form-input">
+                                <option value="email">Simple Email</option>
+                                <option value="autoresponder">Autoresponder Code</option>
+                                <option value="google-form">Google Form</option>
+                                <option value="custom">Custom Form</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Email Configuration -->
+                        <div id="email-config" class="form-config-section">
+                            <h3>Email Configuration</h3>
+                            <div class="form-group">
+                                <label>Recipient Email</label>
+                                <input type="email" id="recipient-email" placeholder="hello@soumita.space" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label>Email Subject</label>
+                                <input type="text" id="email-subject" placeholder="New Contact Form Submission" class="form-input">
+                            </div>
+                        </div>
+                        
+                        <!-- Autoresponder Configuration -->
+                        <div id="autoresponder-config" class="form-config-section" style="display: none;">
+                            <h3>Autoresponder Code</h3>
+                            <div class="form-group">
+                                <label>Paste Autoresponder Code</label>
+                                <textarea id="autoresponder-code" rows="8" placeholder="Paste your autoresponder form code here..." class="form-input"></textarea>
+                                <small>Paste the full form code from your autoresponder service (Mailchimp, ConvertKit, etc.)</small>
+                            </div>
+                            <button type="button" id="parse-autoresponder" class="btn-secondary">
+                                <i class="fas fa-magic"></i> Parse & Integrate
+                            </button>
+                        </div>
+                        
+                        <!-- Google Form Configuration -->
+                        <div id="google-form-config" class="form-config-section" style="display: none;">
+                            <h3>Google Form Configuration</h3>
+                            <div class="form-group">
+                                <label>Google Form URL</label>
+                                <input type="url" id="google-form-url" placeholder="https://docs.google.com/forms/d/e/..." class="form-input">
+                                <small>Paste your Google Form URL here</small>
+                            </div>
+                            <div class="form-group">
+                                <label>Form Height (px)</label>
+                                <input type="number" id="google-form-height" value="600" class="form-input">
+                            </div>
+                        </div>
+                        
+                        <!-- Custom Form Configuration -->
+                        <div id="custom-form-config" class="form-config-section" style="display: none;">
+                            <h3>Custom Form Fields</h3>
+                            <div id="custom-fields-list">
+                                <!-- Custom fields will be added here -->
+                            </div>
+                            <button type="button" id="add-custom-field" class="btn-secondary">
+                                <i class="fas fa-plus"></i> Add Field
+                            </button>
+                        </div>
+                        
+                        <button type="button" id="save-form-config" class="btn-primary">
+                            <i class="fas fa-save"></i> Save Form Configuration
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Legal Compliance Section Editor -->
+                <div id="legal-editor" class="editor-section">
+                    <h2>Legal Compliance</h2>
+                    <div class="editor-grid">
+                        <div class="editor-form">
+                            <div class="legal-warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <strong>Important:</strong> Legal compliance is mandatory for all websites. This section generates essential legal pages and components.
+                            </div>
+                            
+                            <!-- Company Information -->
+                            <div class="form-section">
+                                <h3>Company Information</h3>
+                                <div class="form-group">
+                                    <label>Company/Business Name</label>
+                                    <input type="text" id="company-name" placeholder="e.g., Soumita Chatterjee Consulting" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label>Legal Entity Type</label>
+                                    <select id="entity-type" class="form-input">
+                                        <option value="individual">Individual/Sole Proprietor</option>
+                                        <option value="partnership">Partnership</option>
+                                        <option value="llc">LLC</option>
+                                        <option value="corporation">Corporation</option>
+                                        <option value="nonprofit">Non-Profit</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Country of Operation</label>
+                                    <select id="country-operation" class="form-input">
+                                        <option value="australia">Australia</option>
+                                        <option value="india">India</option>
+                                        <option value="usa">United States</option>
+                                        <option value="uk">United Kingdom</option>
+                                        <option value="canada">Canada</option>
+                                        <option value="eu">European Union</option>
+                                        <option value="global">Global/Multiple Countries</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Business Address</label>
+                                    <textarea id="business-address" placeholder="Full business address" class="form-input" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Email</label>
+                                    <input type="email" id="legal-email" placeholder="legal@yourcompany.com" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="tel" id="legal-phone" placeholder="+1-234-567-8900" class="form-input">
+                                </div>
+                            </div>
+                            
+                            <!-- Data Collection -->
+                            <div class="form-section">
+                                <h3>Data Collection & Privacy</h3>
+                                <div class="form-group">
+                                    <label>Types of Data Collected</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="collect-name" checked>
+                                            <span>Name</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="collect-email" checked>
+                                            <span>Email Address</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="collect-phone">
+                                            <span>Phone Number</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="collect-address">
+                                            <span>Address</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="collect-cookies" checked>
+                                            <span>Cookies & Analytics</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="collect-usage">
+                                            <span>Usage Data</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Data Usage Purpose</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="purpose-contact" checked>
+                                            <span>Contact & Communication</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="purpose-services" checked>
+                                            <span>Service Provision</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="purpose-marketing">
+                                            <span>Marketing & Promotions</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="purpose-analytics" checked>
+                                            <span>Analytics & Improvement</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="purpose-legal">
+                                            <span>Legal Compliance</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Data Retention Period (months)</label>
+                                    <input type="number" id="data-retention" value="24" min="1" max="120" class="form-input">
+                                </div>
+                            </div>
+                            
+                            <!-- Third Party Services -->
+                            <div class="form-section">
+                                <h3>Third Party Services</h3>
+                                <div class="form-group">
+                                    <label>Analytics Services</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="google-analytics">
+                                            <span>Google Analytics</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="facebook-pixel">
+                                            <span>Facebook Pixel</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="hotjar">
+                                            <span>Hotjar</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Payment Processors</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="stripe">
+                                            <span>Stripe</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="paypal">
+                                            <span>PayPal</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="square">
+                                            <span>Square</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Other Services</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="mailchimp">
+                                            <span>Mailchimp</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="hubspot">
+                                            <span>HubSpot</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="zapier">
+                                            <span>Zapier</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Legal Pages -->
+                            <div class="form-section">
+                                <h3>Legal Pages to Generate</h3>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" id="generate-privacy" checked>
+                                        <span>Privacy Policy</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" id="generate-terms" checked>
+                                        <span>Terms of Service</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" id="generate-disclaimer" checked>
+                                        <span>Disclaimer</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" id="generate-cookies" checked>
+                                        <span>Cookie Policy</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" id="generate-ccpa">
+                                        <span>CCPA Notice (California)</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" id="generate-gdpr">
+                                        <span>GDPR Notice (EU)</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Cookie Consent -->
+                            <div class="form-section">
+                                <h3>Cookie Consent Banner</h3>
+                                <div class="form-group">
+                                    <label>Enable Cookie Consent</label>
+                                    <input type="checkbox" id="enable-cookie-consent" checked>
+                                </div>
+                                <div class="form-group">
+                                    <label>Consent Message</label>
+                                    <textarea id="cookie-message" placeholder="We use cookies to enhance your experience..." class="form-input" rows="3">We use cookies to enhance your experience, analyze site traffic, and personalize content. By continuing to use this site, you consent to our use of cookies.</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Accept Button Text</label>
+                                    <input type="text" id="accept-button-text" value="Accept All" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label>Decline Button Text</label>
+                                    <input type="text" id="decline-button-text" value="Decline" class="form-input">
+                                </div>
+                            </div>
+                            
+                            <button type="button" id="generate-legal-pages" class="btn-primary">
+                                <i class="fas fa-gavel"></i> Generate Legal Pages
+                            </button>
+                        </div>
+                        
+                        <div class="editor-preview">
+                            <h3>Generated Legal Pages</h3>
+                            <div id="legal-pages-preview" class="preview-frame">
+                                <div class="legal-pages-list">
+                                    <!-- Generated legal pages will appear here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Credentials Section Editor -->
+                <div id="credentials-editor" class="editor-section">
+                    <h2>Change Admin Credentials</h2>
+                    <div class="editor-form">
+                        <form id="change-credentials-form">
+                            <div class="form-group">
+                                <label>New Username</label>
+                                <input type="text" id="new-username" placeholder="Enter new username" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <input type="password" id="current-password" placeholder="Enter current password" required>
+                            </div>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" id="new-password" placeholder="Enter new password" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm New Password</label>
+                                <input type="password" id="confirm-password" placeholder="Confirm new password" required>
+                            </div>
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-key"></i> Update Credentials
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="preview-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Live Preview</h2>
+                <div class="preview-controls">
+                    <button class="screen-size-btn active" data-size="desktop">
+                        <i class="fas fa-desktop"></i> Desktop
+                    </button>
+                    <button class="screen-size-btn" data-size="tablet">
+                        <i class="fas fa-tablet-alt"></i> Tablet
+                    </button>
+                    <button class="screen-size-btn" data-size="mobile">
+                        <i class="fas fa-mobile-alt"></i> Mobile
+                    </button>
+                </div>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="preview-container">
+                    <iframe id="preview-iframe" src="index.html"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div id="message-container" class="message-container"></div>
+
+    <!-- Theme Preview Modal -->
+    <div id="theme-preview-modal" class="theme-preview-modal">
+        <div class="theme-preview-content">
+            <div class="theme-preview-header">
+                <h2><i class="fas fa-eye"></i> Theme Preview</h2>
+                <div class="preview-controls">
+                    <button class="screen-size-btn active" data-size="desktop">
+                        <i class="fas fa-desktop"></i> Desktop
+                    </button>
+                    <button class="screen-size-btn" data-size="tablet">
+                        <i class="fas fa-tablet-alt"></i> Tablet
+                    </button>
+                    <button class="screen-size-btn" data-size="mobile">
+                        <i class="fas fa-mobile-alt"></i> Mobile
+                    </button>
+                </div>
+                <button class="theme-preview-close" id="theme-preview-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="preview-container">
+                <iframe id="theme-preview-iframe" class="theme-preview-iframe" src="index.html"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('Admin panel loading...');
+    </script>
+    <script src="supabase-config.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html> 

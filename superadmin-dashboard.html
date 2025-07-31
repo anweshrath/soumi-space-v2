@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Dashboard - Soumita Space Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary-color: #8b5cf6;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-border: #334155;
+            --dark-text: #f1f5f9;
+            --dark-text-secondary: #94a3b8;
+            
+            --light-bg: #ffffff;
+            --light-surface: #f8fafc;
+            --light-border: #e2e8f0;
+            --light-text: #1e293b;
+            --light-text-secondary: #64748b;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light-bg);
+            color: var(--light-text);
+            line-height: 1.6;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--dark-bg);
+            color: var(--dark-text);
+            padding: 24px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 0 24px 24px;
+            border-bottom: 1px solid var(--dark-border);
+            margin-bottom: 24px;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark-text);
+        }
+
+        .sidebar-logo i {
+            color: var(--primary-color);
+        }
+
+        .sidebar-nav {
+            padding: 0 16px;
+        }
+
+        .nav-section {
+            margin-bottom: 32px;
+        }
+
+        .nav-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--dark-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            padding: 0 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--dark-text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            margin-bottom: 4px;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--dark-text);
+        }
+
+        .nav-item.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 24px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--light-border);
+        }
+
+        .header-left h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--light-text);
+            margin-bottom: 4px;
+        }
+
+        .header-left p {
+            color: var(--light-text-secondary);
+            font-size: 16px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: var(--light-surface);
+            border: 1px solid var(--light-border);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .user-menu:hover {
+            background: var(--light-bg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--light-bg);
+            border: 1px solid var(--light-border);
+            border-radius: var(--border-radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .stat-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--light-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+        }
+
+        .stat-icon.users { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); }
+        .stat-icon.sites { background: linear-gradient(135deg, var(--success-color), #059669); }
+        .stat-icon.revenue { background: linear-gradient(135deg, var(--accent-color), #d97706); }
+        .stat-icon.active { background: linear-gradient(135deg, var(--info-color), #2563eb); }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--light-text);
+            margin-bottom: 8px;
+        }
+
+        .stat-change {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .stat-change.positive { color: var(--success-color); }
+        .stat-change.negative { color: var(--danger-color); }
+
+        /* Content Sections */
+        .content-section {
+            background: var(--light-bg);
+            border: 1px solid var(--light-border);
+            border-radius: var(--border-radius-lg);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--light-border);
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--light-text);
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--light-surface);
+            color: var(--light-text);
+            border: 1px solid var(--light-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--light-bg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 16px 24px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-border);
+        }
+
+        .table th {
+            background: var(--light-surface);
+            font-weight: 600;
+            color: var(--light-text);
+            font-size: 14px;
+        }
+
+        .table td {
+            color: var(--light-text);
+            font-size: 14px;
+        }
+
+        .table tbody tr:hover {
+            background: var(--light-surface);
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-active { background: rgba(16, 185, 129, 0.1); color: var(--success-color); }
+        .status-inactive { background: rgba(239, 68, 68, 0.1); color: var(--danger-color); }
+        .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning-color); }
+
+        /* Charts */
+        .chart-container {
+            padding: 24px;
+            height: 300px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: var(--transition);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        /* Mobile Toggle */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--light-text);
+            cursor: pointer;
+        }
+
+        /* Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .sidebar-overlay.open {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Super Admin</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Overview</div>
+                    <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#analytics" class="nav-item" data-section="analytics">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">User Management</div>
+                    <a href="#users" class="nav-item" data-section="users">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                    </a>
+                    <a href="#subscriptions" class="nav-item" data-section="subscriptions">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Subscriptions</span>
+                    </a>
+                    <a href="#billing" class="nav-item" data-section="billing">
+                        <i class="fas fa-receipt"></i>
+                        <span>Billing</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Site Management</div>
+                    <a href="#sites" class="nav-item" data-section="sites">
+                        <i class="fas fa-globe"></i>
+                        <span>Sites</span>
+                    </a>
+                    <a href="#templates" class="nav-item" data-section="templates">
+                        <i class="fas fa-palette"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="#domains" class="nav-item" data-section="domains">
+                        <i class="fas fa-link"></i>
+                        <span>Domains</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Platform</div>
+                    <a href="#settings" class="nav-item" data-section="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#logs" class="nav-item" data-section="logs">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Logs</span>
+                    </a>
+                    <a href="#backups" class="nav-item" data-section="backups">
+                        <i class="fas fa-database"></i>
+                        <span>Backups</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Support</div>
+                    <a href="#tickets" class="nav-item" data-section="tickets">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>Support Tickets</span>
+                    </a>
+                    <a href="#docs" class="nav-item" data-section="docs">
+                        <i class="fas fa-book"></i>
+                        <span>Documentation</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1>Dashboard</h1>
+                    <p>Platform overview and management</p>
+                </div>
+                <div class="header-right">
+                    <button class="mobile-toggle" id="mobile-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="user-menu" id="user-menu">
+                        <div class="user-avatar">SA</div>
+                        <span>Super Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div id="dashboard-content">
+                <!-- Stats Grid -->
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Total Users</div>
+                            <div class="stat-icon users">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="total-users">1,247</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            +12.5% from last month
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Active Sites</div>
+                            <div class="stat-icon sites">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="active-sites">892</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            +8.3% from last month
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Monthly Revenue</div>
+                            <div class="stat-icon revenue">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="monthly-revenue">$24,580</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            +15.2% from last month
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Active Subscriptions</div>
+                            <div class="stat-icon active">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="active-subscriptions">1,156</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            +5.7% from last month
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Users -->
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Users</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-download"></i>
+                                Export
+                            </button>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                Add User
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Email</th>
+                                    <th>Plan</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-users-table">
+                                <!-- Table rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Recent Sites -->
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Sites</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-eye"></i>
+                                View All
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Site Name</th>
+                                    <th>Owner</th>
+                                    <th>Template</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-sites-table">
+                                <!-- Table rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <script>
+        class SuperAdminDashboard {
+            constructor() {
+                this.currentSection = 'dashboard';
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.loadDashboardData();
+                this.checkAuth();
+            }
+
+            bindEvents() {
+                // Navigation
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.switchSection(item.dataset.section);
+                    });
+                });
+
+                // Mobile toggle
+                document.getElementById('mobile-toggle').addEventListener('click', () => {
+                    this.toggleSidebar();
+                });
+
+                // User menu
+                document.getElementById('user-menu').addEventListener('click', () => {
+                    this.showUserMenu();
+                });
+
+                // Sidebar overlay
+                document.getElementById('sidebar-overlay').addEventListener('click', () => {
+                    this.closeSidebar();
+                });
+            }
+
+            checkAuth() {
+                const token = localStorage.getItem('superadmin_token');
+                if (!token) {
+                    window.location.href = 'superadmin.html';
+                }
+            }
+
+            switchSection(section) {
+                // Update active nav item
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                document.querySelector(`[data-section="${section}"]`).classList.add('active');
+
+                // Update content
+                this.currentSection = section;
+                this.loadSectionContent(section);
+            }
+
+            loadSectionContent(section) {
+                const contentDiv = document.getElementById('dashboard-content');
+                
+                switch(section) {
+                    case 'dashboard':
+                        this.loadDashboard();
+                        break;
+                    case 'users':
+                        this.loadUsers();
+                        break;
+                    case 'sites':
+                        this.loadSites();
+                        break;
+                    case 'analytics':
+                        this.loadAnalytics();
+                        break;
+                    default:
+                        contentDiv.innerHTML = `<h2>${section.charAt(0).toUpperCase() + section.slice(1)}</h2><p>Content for ${section} section</p>`;
+                }
+            }
+
+            loadDashboard() {
+                // Dashboard is already loaded by default
+                this.loadDashboardData();
+            }
+
+            async loadDashboardData() {
+                // Simulate loading data
+                await this.loadRecentUsers();
+                await this.loadRecentSites();
+            }
+
+            async loadRecentUsers() {
+                const mockUsers = [
+                    {
+                        name: 'John Doe',
+                        email: 'john@example.com',
+                        plan: 'Professional',
+                        status: 'active',
+                        created: '2024-01-15'
+                    },
+                    {
+                        name: 'Jane Smith',
+                        email: 'jane@example.com',
+                        plan: 'Starter',
+                        status: 'active',
+                        created: '2024-01-14'
+                    },
+                    {
+                        name: 'Mike Johnson',
+                        email: 'mike@example.com',
+                        plan: 'Enterprise',
+                        status: 'pending',
+                        created: '2024-01-13'
+                    }
+                ];
+
+                const tbody = document.getElementById('recent-users-table');
+                tbody.innerHTML = mockUsers.map(user => `
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                    ${user.name.charAt(0)}
+                                </div>
+                                <span>${user.name}</span>
+                            </div>
+                        </td>
+                        <td>${user.email}</td>
+                        <td>${user.plan}</td>
+                        <td><span class="status-badge status-${user.status}">${user.status}</span></td>
+                        <td>${user.created}</td>
+                        <td>
+                            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            async loadRecentSites() {
+                const mockSites = [
+                    {
+                        name: 'john-portfolio.com',
+                        owner: 'John Doe',
+                        template: 'Professional',
+                        status: 'active',
+                        created: '2024-01-15'
+                    },
+                    {
+                        name: 'jane-portfolio.com',
+                        owner: 'Jane Smith',
+                        template: 'Creative',
+                        status: 'active',
+                        created: '2024-01-14'
+                    },
+                    {
+                        name: 'mike-portfolio.com',
+                        owner: 'Mike Johnson',
+                        template: 'Tech',
+                        status: 'inactive',
+                        created: '2024-01-13'
+                    }
+                ];
+
+                const tbody = document.getElementById('recent-sites-table');
+                tbody.innerHTML = mockSites.map(site => `
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <i class="fas fa-globe" style="color: #6366f1;"></i>
+                                <span>${site.name}</span>
+                            </div>
+                        </td>
+                        <td>${site.owner}</td>
+                        <td>${site.template}</td>
+                        <td><span class="status-badge status-${site.status}">${site.status}</span></td>
+                        <td>${site.created}</td>
+                        <td>
+                            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+                
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('open');
+            }
+
+            closeSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+                
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+            }
+
+            showUserMenu() {
+                // Implement user menu dropdown
+                console.log('Show user menu');
+            }
+
+            loadUsers() {
+                const contentDiv = document.getElementById('dashboard-content');
+                contentDiv.innerHTML = `
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h2 class="section-title">User Management</h2>
+                            <div class="section-actions">
+                                <button class="btn btn-secondary">
+                                    <i class="fas fa-download"></i>
+                                    Export Users
+                                </button>
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-plus"></i>
+                                    Add User
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Email</th>
+                                        <th>Plan</th>
+                                        <th>Status</th>
+                                        <th>Sites</th>
+                                        <th>Created</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>John Doe</td>
+                                        <td>john@example.com</td>
+                                        <td>Professional</td>
+                                        <td><span class="status-badge status-active">Active</span></td>
+                                        <td>3</td>
+                                        <td>2024-01-15</td>
+                                        <td>
+                                            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-danger" style="padding: 4px 8px; font-size: 12px;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            }
+
+            loadSites() {
+                const contentDiv = document.getElementById('dashboard-content');
+                contentDiv.innerHTML = `
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Site Management</h2>
+                            <div class="section-actions">
+                                <button class="btn btn-secondary">
+                                    <i class="fas fa-download"></i>
+                                    Export Sites
+                                </button>
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-plus"></i>
+                                    Create Site
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Site Name</th>
+                                        <th>Owner</th>
+                                        <th>Template</th>
+                                        <th>Status</th>
+                                        <th>Traffic</th>
+                                        <th>Created</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>john-portfolio.com</td>
+                                        <td>John Doe</td>
+                                        <td>Professional</td>
+                                        <td><span class="status-badge status-active">Active</span></td>
+                                        <td>1,234</td>
+                                        <td>2024-01-15</td>
+                                        <td>
+                                            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-danger" style="padding: 4px 8px; font-size: 12px;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            }
+
+            loadAnalytics() {
+                const contentDiv = document.getElementById('dashboard-content');
+                contentDiv.innerHTML = `
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Platform Analytics</h2>
+                            <div class="section-actions">
+                                <button class="btn btn-secondary">
+                                    <i class="fas fa-download"></i>
+                                    Export Report
+                                </button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <p>Analytics charts will be displayed here</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize Super Admin Dashboard
+        new SuperAdminDashboard();
+    </script>
+</body>
+</html> 
